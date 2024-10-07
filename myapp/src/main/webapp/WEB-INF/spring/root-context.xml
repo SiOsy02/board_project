@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<!-- Root Context: Service, DAO 계층 관련된 객체들을 등록 -->
+	
+	<!-- 지정한 프로퍼티 파일의 내용들을  -->
+	<!-- 스프링(컨텍스트)의 설정파일과 소스코드에서 사용가능한 프로퍼티로 등록  -->
+	<!-- <context:property-placeholder location="classpath:config/file.properties,classpath:config/db.properties" /> -->
+	<context:property-placeholder location="classpath:config/*.properties" />
+	
+	<!-- 	@Transactional 애노테이션을 사용하여 트랜잭션 선언 기능 사용 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- 스프링에서 트랜잭션 관리를 담당하는 TransactionManager 객체 등록 -->
+	<bean   id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
+		<property name="dataSource" ref="ds" />
+	</bean>
+
+	<!-- 데이터베이스와의 커넥션을 제공해주는 데이터소스 객체를 스프링에 등록 -->
+	<bean id="ds" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close" >
+		<!-- 데이터베이스와의 커넥션에 필요한 정보 설정 -->
+		<property name="driverClassName" value="${db.driver}" />
+		<property name="url" value="${db.url}" />
+		<property name="username" value="${db.id}" />
+		<property name="password" value="${db.pw}" />
+	</bean>
+	<!-- 마이바티스의 SqlSessionFactory 객체를 스프링에 등록 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 커넥션을 제공하는 데이터소스 지정 -->
+		<property name="dataSource" ref="ds" />
+		<property name="configuration">
+		    <bean class="org.apache.ibatis.session.Configuration">
+		      <property name="mapUnderscoreToCamelCase" value="true" />
+			<!-- 조회결과를 담을 때, 컬럼명과 대응되는 속성이 있는 경우 자동으로 컬럼값을 저장 -->
+			<!-- PARTIAL (디폴트) : 내포된 resultMap이 없는 resultMap에 적용 -->
+			<!-- FULL : 모든 resultMap에 적용 -->
+			<!-- <property name="autoMappingBehavior" value="FULL" /> -->
+		    </bean>
+		</property>
+		<!-- 지정한 패키지 하위의 모든 클래스들에 대해서 클래스명(SimpleName)으로 별명을 자동 등록 -->
+		<property name="typeAliasesPackage" value="com.exam.myapp" ></property>
+		<!-- 마이바티스 전체 설정 파일 위치 지정 -->
+<!-- 		<property name="configLocation" value="classpath:batis/mybatis-config.xml" /> -->
+		<!-- 마이바티스를 통해서 실행할 SQL문들이 정의되어 있는 파일들 -->
+		<property name="mapperLocations" value="classpath*:batis/mappers/**/*.xml" />
+	</bean>
+	
+<!-- 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"> -->
+<!-- 	  <constructor-arg index="0" ref="sqlSessionFactory" /> -->
+<!-- 	</bean> -->
+
+<!-- 지정한 패키지 하위에 있는 인터페이스들을 찾아서 마이바티스 구현체(클래스)를 생성하여 스프링에 등록 -->
+<!-- @Mapper 애노테이션이 적용된 인터페이스만 구현체를 생성하도록 설정 -->
+	<mybatis-spring:scan base-package="com.exam.myapp" annotation="org.apache.ibatis.annotations.Mapper" />
+
+	<context:component-scan base-package="com.exam.myapp">
+		<!-- @Controller 애노테이션이 붙은 클래스는 제외 -->
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<!-- 컨트롤러 외의 계층에서 메서드 유효성 검사를 활성화  -->
+	<bean class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor" />
+
+</beans>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.exam.myapp.bbs.service.BbsDao">
+
+  <!-- 조건 검색 SQL -->
+  <sql id="searchCondition">
+    <where>
+      <if test="searchValue!=null and searchValue!=''">
+	        <if test="searchKey=='title' or searchKey=='total'">
+	          bbs_title LIKE CONCAT('%', #{searchValue}, '%')
+	        </if>
+	        <if test="searchKey=='content' or searchKey=='total'">
+	          OR bbs_content LIKE CONCAT('%', #{searchValue}, '%')
+	        </if>
+      </if>
+    </where>
+  </sql>
+
+  <!-- 전체 게시글 조회 -->
+  <select id="findAll" resultType="BbsVo">
+    SELECT 
+    	bbs_no
+    	, bbs_title
+    	, bbs_writer
+    	, bbs_reg_date
+    	, bbs_count
+    FROM bbs
+    <include refid="searchCondition"></include>
+    ORDER BY bbs_reg_date DESC
+    LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+  </select>
+
+  <!-- 게시글 수 카운트 -->
+  <select id="countAll" resultType="int">
+    SELECT COUNT(*)
+    FROM bbs
+    <include refid="searchCondition"></include>
+  </select>
+
+  <!-- resultMap 정의 -->
+  <resultMap type="BbsVo" id="bbsMap" autoMapping="true">
+    <id property="bbsNo" column="bbs_no"/>
+<!-- resultMap에서 autoMapping="true" 속성을 설정하면 -->
+<!-- 컬럼명에 대응되는 이름의 속성이 있는 경우 자동으로 컬럼값을 담게 되므로 -->
+<!-- result 요소들을 생략 가능  -->
+<!-- 	<result property="bbsTitle" column="bbs_title" /> -->
+<!-- 	<result property="bbsContent" column="bbs_content" /> -->
+<!-- 	<result property="bbsWriter" column="bbs_writer" /> -->
+<!-- 	<result property="bbsRegDate" column="bbs_reg_date" /> -->
+<!-- 	<result property="bbsCount" column="bbs_count" /> -->
+    
+    <!-- 첨부 파일 리스트 매핑 -->
+    <collection property="attList" ofType="AttachVo" autoMapping="true">
+      <id property="attNo" column="att_no"/>
+    </collection>
+  </resultMap>
+
+  <!-- 게시글 ID로 조회 -->
+  <select id="findById" resultMap="bbsMap">
+    SELECT 
+    	bbs_no
+    	, bbs_title
+    	, bbs_content
+    	, bbs_writer
+    	, bbs_reg_date
+    	, bbs_count
+    	, att_no
+    	, att_org_name
+    	, att_new_name
+    	, att_bbs_no
+    FROM bbs LEFT OUTER JOIN attach ON bbs_no = att_bbs_no
+    WHERE bbs_no = #{bbsNo}
+  </select>
+
+	<!-- 게시글 추가 -->
+	<insert id="add">
+	  	<selectKey keyProperty="bbsNo" order="BEFORE" resultType="int" >
+  		SELECT NEXT VALUE FOR bbs_seq
+  		</selectKey>
+	    INSERT INTO bbs (
+	        bbs_no
+	        , bbs_title
+	        , bbs_content
+	        , bbs_writer
+	    )
+	    VALUES (
+	        #{bbsNo}
+	        , #{bbsTitle}
+	        , #{bbsContent}
+	        , #{bbsWriter}
+	    )
+	</insert>
+
+  <!-- 게시글 수정 -->
+  <update id="edit">
+    UPDATE bbs
+    SET 
+    	bbs_title = #{bbsTitle}
+    	, bbs_content = #{bbsContent}
+    WHERE bbs_no = #{bbsNo} 
+    and bbs_writer = #{bbsWriter}
+  </update>
+
+  <!-- 게시글 삭제 -->
+  <delete id="del">
+    DELETE FROM bbs
+    WHERE bbs_no = #{bbsNo} 
+    and bbs_writer = #{bbsWriter}
+  </delete>
+</mapper>

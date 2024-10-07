@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+
+<tiles-definitions>
+
+<!-- baselayout 이라는 이름의 화면을 만들 때, /WEB-INF/views/comm/layout.jsp 파일의  -->
+<!-- title, menu, body, footer 속성 위치에 지정한 값을 주입하여 화면을 생성 -->
+
+  <definition name="baselayout" template="/WEB-INF/views/comm/layout.jsp">
+    <put-attribute name="title" value="회원제게시판" /> <!-- type : String 이라는 속성이 생략된 상태 -->
+    <put-attribute name="menu" value="/WEB-INF/views/comm/menu.jsp" /> <!-- type : template 이라는 속성이 생략된 상태 -->
+    <put-attribute name="body" value="" />
+    <put-attribute name="footer" value="/WEB-INF/views/comm/foot.jsp" /> <!-- type : template 이라는 속성이 생략된 상태 -->
+  </definition>
+	<!-- type 속성을 사용하여, value가 화면정의이름(definition), JSP파일(template), 단순문자열(string) 인지 지정 가능 -->
+	<!-- type 속성 생략시, definition으로 취급하여 지정한 이름의 화면정의를 찾고, -->
+	<!-- 없으면, "/"로 시작하면 template으로, 그렇지 않으면 string으로 취급 -->
+	
+  <!-- 다른 화면정의를 상속하여 새로운 화면 정의 가능 -->
+  <definition name="member/login" extends="baselayout" >
+  	<put-attribute name="body" value="/WEB-INF/views/member/login.jsp" />
+  </definition>
+  
+  <!-- 화면정의 이름에 와일드카드 사용 가능 : ?는 1글자, *는 0개 이상의 글자 의미 -->
+  <definition name="*/*" extends="baselayout" >
+	<!-- 화면정의 이름의 n번째 * 에 해당하는 내용을 {n} 표현으로 value에 사용 가능  -->
+  	<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+  </definition>
+  
+</tiles-definitions>
+

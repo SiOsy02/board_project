@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!-- 조회결과를 자바 객체에 담을 때, -->
+		<!-- 밑줄표기법의 컬럼명과 낙타표기법의 속성(변수)명을 맵핑 -->
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+
+	<typeAliases>
+<!-- 마이바티스 설정파일 내에서 긴 타입(클래스)이름을 짧은 별칭으로 사용 -->
+		<typeAlias type="com.exam.myapp.member.MemberVo" alias="MemberVo" />
+		<typeAlias type="com.exam.myapp.bbs.BbsVo" alias="BbsVo" />
+<!-- 		패키지를 지정하면, 하위 패키지(폴더)의 모든 클래스들에 대해서 -->
+<!-- 		클래스명(SimpleName)으로 별명을 자동 등록 -->
+<!-- 		<package name="com.exam.myapp" /> -->
+	</typeAliases>
+
+<!-- 다수의 데이터베이스(환경) 중 사용할 환경의 id를 default 속성에 지정  -->
+<!--   <environments default="development"> -->
+<!--     <environment id="development"> -->
+<!--       <transactionManager type="JDBC"/> -->
+<!--       <dataSource type="POOLED"> -->
+<!--         <property name="driver" value="oracle.jdbc.OracleDriver"/> -->
+<!--         <property name="url" value="jdbc:oracle:thin:@//localhost:1521/xe"/> -->
+<!--         <property name="username" value="com"/> -->
+<!--         <property name="password" value="com01"/> -->
+<!--       </dataSource> -->
+<!--     </environment> -->
+<!--   </environments> -->
+  <mappers>
+	<!-- 마이바티스를 통해서 실행할 SQL문들이 정의되어 있는 파일들 -->
+<!--     <mapper resource="batis/mappers/MemberMapper.xml"/> -->
+<!--     <mapper resource="batis/mappers/BbsMapper.xml"/> -->
+  </mappers>
+</configuration>
+
+
