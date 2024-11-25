@@ -3,11 +3,17 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>    
 
-<h1>게시글목록</h1>
-<a href='${pageContext.request.contextPath}/bbs/add.do' >새글쓰기</a><br>
-<table border="1">
+<div class="container-sm">
+
+<div class="row g-2">
+<div class="mb-3"></div>
+<h2 class="col mb-4">게시글 목록</h2>
+<a href='${pageContext.request.contextPath}/bbs/add.do' class="btn btn-outline-primary mb-4"> 글쓰기 </a>
+</div>
+
+<table class="container-sm table">
 <thead>
-	<tr><th>번호</th><th>제목</th><th>작성자</th><th>작성일</th></tr>
+	<tr><th scope="col">번호</th><th scope="col">제목</th><th scope="col">작성자</th><th scope="col">작성일</th></tr>
 </thead>
 <tbody>
 <c:forEach var="vo" items="${bbsList}" varStatus="stat"  >
@@ -28,6 +34,9 @@
 </c:forEach>
 </tbody>
 </table>
+</div>
+
+
 <script type="text/javascript">
 	function editBbs(bbsNo) {
 		document.querySelector('[name="currentPageNo"]').value = ${searchVo.currentPageNo};
@@ -36,13 +45,13 @@
 		document.querySelector('#searchForm').submit();
 	}
 </script>
-<hr>
-<form id="searchForm"  action="${pageContext.request.contextPath}/bbs/list.do">
+
+<form id="searchForm" class="container-sm" action="${pageContext.request.contextPath}/bbs/list.do">
 	<input type="hidden" name="bbsNo" >
 	<select name="searchKey" >
-		<option value="title" >제목</option>
-		<option value="content" >내용</option>
-		<option value="total" >제목+내용</option>
+		<option value="title"> 제목 </option>
+		<option value="content"> 내용 </option>
+		<option value="total"> 제목+내용 </option>
 	</select>
 	<script type="text/javascript">
 		if ( '${searchVo.searchKey}' )
@@ -60,13 +69,15 @@
 	}
 </script>
 
+<div class="container-sm">
+
 <c:if test="${searchVo.firstPageNoOnPageList>1}">
 	<a href="#" onclick="goPage(${searchVo.firstPageNoOnPageList-1});" >[이전]</a>
 </c:if>
 
 <c:forEach var="no" begin="${searchVo.firstPageNoOnPageList}" end="${searchVo.lastPageNoOnPageList}" step="1" >
 	<c:if test="${no!=searchVo.currentPageNo}">
-		<a href="#" onclick="goPage(${no});" >[${no}]</a>
+		<a href="#" onclick="goPage(${no});">[${no}]</a>
 	</c:if>
 	<c:if test="${no==searchVo.currentPageNo}">
 		[${no}]
@@ -77,6 +88,7 @@
 	<a href="#" onclick="goPage(${searchVo.lastPageNoOnPageList+1});" >[다음]</a>
 </c:if>
 
+</div>
 
 
 

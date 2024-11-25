@@ -1,21 +1,35 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>    
 
-<h1>게시글 정보 변경</h1>
-<form id="editForm" action='${pageContext.request.contextPath}/bbs/edit.do' method='post' >
-<input type="hidden" name="bbsNo" value="${bbsVo.bbsNo}" />
-제목 : <input type='text' name="bbsTitle" value="${fn:escapeXml(bbsVo.bbsTitle)}" ><br>     
-내용 : <textarea name="bbsContent" rows="10" cols="50">${fn:escapeXml(bbsVo.bbsContent)}</textarea> <br>
-작성자 : <c:out value="${bbsVo.bbsWriter}" /> <br> 
-<c:forEach var="attVo" items="${bbsVo.attList}" >
-	첨부파일 : <a href="${pageContext.request.contextPath}/bbs/down.do?attNo=${attVo.attNo}" ><c:out value="${attVo.attOrgName}" /></a> <br>  
-</c:forEach>
+<div class="container-sm mb-3">
+	<div class="mb-3"></div>
+	<h1 class="mb-3">게시글 조회</h1>
+	
+	<form id="editForm" action='${pageContext.request.contextPath}/bbs/edit.do' method='post' >
+	
+		<input type="hidden" name="bbsNo" value="${bbsVo.bbsNo}" />
+		
+		<h5 class="form-label mb-3"> 작성자 : <c:out value="${bbsVo.bbsWriter}" /> </h5> 
+		
+		<label class="form-label" for="bbsTitle"> 제목 </label> 
+		<input type='text' class="form-control"  name="bbsTitle" value="${fn:escapeXml(bbsVo.bbsTitle)}" >
+		
+		<br> 
+		
+		<label class="form-label" for="bbsContent"> 내용 </label>   
+		<textarea class="form-control" name="bbsContent" rows="10" cols="50">${fn:escapeXml(bbsVo.bbsContent)}</textarea> <br>
+
+	<c:forEach var="attVo" items="${bbsVo.attList}" >
+		첨부파일 : 
+		<a href="${pageContext.request.contextPath}/bbs/down.do?attNo=${attVo.attNo}" ><c:out value="${attVo.attOrgName}" /></a> 
+		<br>  
+	</c:forEach>
 
 <c:if test="${bbsVo.bbsWriter == loginUser.memId}">
-<input type='submit' value="저장">                             
-<button type="button" onclick="delBbs();" >삭제</button>
+<input class="btn btn-primary" type='submit' value="저장">                             
+<button class="btn btn-primary" type="button" onclick="delBbs();" >삭제</button>
+
 <script type="text/javascript">
 	function delBbs() {
 		document.querySelector('#editForm').action = '${pageContext.request.contextPath}/bbs/del.do';
@@ -24,25 +38,34 @@
 </script>
 </c:if>
 
+
 <input type="hidden" name="searchKey" value="${searchVo.searchKey}" >
 <input type="hidden" name="searchValue" value="${searchVo.searchValue}" >
 <input type="hidden" name="currentPageNo" value="${searchVo.currentPageNo}" >
 
-</form>  
-
+</form> 
+</div>
 <hr>
-<textarea id="repContent" rows="5" cols="50"></textarea><br>
-<button id="repAddBtn" type="button">저장</button>
+<div class="container-sm">
+	<label class="form-label" for="repContent"> 댓글 </label>  
+	<textarea class="form-control mb-3" id="repContent" rows="5" cols="50"></textarea>
+	<button id="repAddBtn" type="button" class="btn btn-primary">저장</button>
+	<div class="mb-3"></div>
+	<div class="mb-3"></div>
+	<div class="mb-3"></div>
+</div>
 
-<hr>
+
 <div id="replyList"></div>
 
 <template id="replyTemp">
-	<div class="writer"></div>
-	<div class="date"></div>
-	<div class="content"></div>
-	<button type="button" class="del" >삭제</button>
-	<hr>
+	<div  class="container-sm">
+		<div class="writer"></div>
+		<div class="date"></div>
+		<div class="content"></div>
+		<button class="btn btn-light del" type="button" >삭제</button>
+		<hr>
+	</div>
 </template>
 
 <script type="text/javascript">

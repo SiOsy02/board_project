@@ -1,18 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <div>
-	<fieldset id="container">
-		<legend> <h2> 로그인 </h2> </legend>
-			<form class="loginFrm" action="${pageContext.request.contextPath}/member/login.do" method="post">
-				<div>
-				<label class="label" for="memId" > 아이디 </label>
-				<input type="text" name="memId"/>
+
+	<fieldset class="container-sm notosanskr ">
+	
+		<legend  class="text-center"> 로그인 </legend>
+		
+			<form class="container mb-3" action="${pageContext.request.contextPath}/member/login.do" method="post">
+			
+				<div class="mb-3">
+				<label class="form-label" for="memId" > 아이디 </label>
+				<input class="form-control mb-6" type="text" name="memId"/>
 				</div>
-				<div>
-				<label class="label" for="memPass" > 비밀번호  </label>
-				<input type="password" name="memPass"/>
+				
+				<div class="mb-3">
+				<label class="form-label" for="memPass" > 비밀번호  </label>
+				<input class="form-control mb-6" type="password" name="memPass"/>
 				</div>
-				<input class="submit" type="submit" value="로그인">
+				
+				<input class="btn btn-primary" type="submit" value="로그인">
+				
 			</form>
+			
 	</fieldset>
+	
 </div>

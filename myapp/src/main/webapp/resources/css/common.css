@@ -5,17 +5,3 @@
 	font-family: "Noto Sans KR", sans-serif;
 	letter-spacing: -1px;
 }
-#container {
-	width: 500px;
-	margin : 0 auto;
-	margin-bottom : 80px;
-	text-align : center;
-}
-.label {
-	width: 80px;
-	float: left;
-	margin-left : 30px;
-}
-.submit {
-	margin : 20px auto;
-}
