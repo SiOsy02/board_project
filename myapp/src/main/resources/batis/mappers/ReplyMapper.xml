@@ -5,7 +5,7 @@
 <mapper namespace="com.exam.myapp.reply.service.ReplyDao">
 
   <insert id="add" >
-    INSERT INTO reply (
+    INSERT INTO REPLY (
     	rep_no
     	, rep_content
     	, rep_writer
@@ -20,7 +20,7 @@
   </insert>
 
   <delete id="del">
-    DELETE FROM reply
+    DELETE FROM REPLY
     WHERE rep_no = #{repNo} 
     AND rep_writer = #{repWriter}
   </delete>
@@ -32,7 +32,7 @@
     	, rep_writer
     	, rep_date
     	, rep_bbs_no
-    FROM reply
+    FROM REPLY
     WHERE rep_bbs_no = #{repBbsNo}
     ORDER BY rep_date DESC
   </select>

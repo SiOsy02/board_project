@@ -22,7 +22,7 @@
 			, mem_pass
 			, mem_name
 			, mem_point
-		FROM member
+		FROM MEMBER
 	</select>
   
   <select id="findById" resultType="MemberVo">
@@ -31,13 +31,13 @@
 		, mem_pass
 		, mem_name
 		, mem_point
-	FROM member
+	FROM MEMBER
 	WHERE mem_id = #{memId}
   </select>
   
   <!-- parameterType 속성으로 SQL문 실행시 메서드의 두번째인자로 전달되는 데이터의 타입 지정 가능 -->
   <insert id="add" >
-  	INSERT INTO member (
+  	INSERT INTO MEMBER (
   		mem_id
   		, mem_pass
   		, mem_name
@@ -52,7 +52,7 @@
   </insert>
   
   <update id="edit">
-  	UPDATE member
+  	UPDATE MEMBER
   	SET 
   		mem_name = #{memName}
   		, mem_point = #{memPoint}
@@ -60,7 +60,7 @@
   </update>
   
   <delete id="del">
-  	DELETE FROM member
+  	DELETE FROM MEMBER
   	WHERE mem_id = #{memId}
   </delete>
 </mapper>

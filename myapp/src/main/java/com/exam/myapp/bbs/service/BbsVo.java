@@ -12,7 +12,7 @@ import lombok.Setter;
 
 @Getter @Setter
 public class BbsVo {
-	private Integer bbsNo;
+	private int bbsNo;
 	private String bbsTitle;
 	private String bbsContent;
 	private String bbsWriter;

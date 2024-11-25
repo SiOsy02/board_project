@@ -25,7 +25,7 @@
     	, bbs_writer
     	, bbs_reg_date
     	, bbs_count
-    FROM bbs
+    FROM BBS
     <include refid="searchCondition"></include>
     ORDER BY bbs_reg_date DESC
     LIMIT #{firstRecordIndex}, #{recordCountPerPage}
@@ -34,7 +34,7 @@
   <!-- 게시글 수 카운트 -->
   <select id="countAll" resultType="int">
     SELECT COUNT(*)
-    FROM bbs
+    FROM BBS
     <include refid="searchCondition"></include>
   </select>
 
@@ -69,16 +69,16 @@
     	, att_org_name
     	, att_new_name
     	, att_bbs_no
-    FROM bbs LEFT OUTER JOIN attach ON bbs_no = att_bbs_no
+    FROM BBS LEFT OUTER JOIN ATTATCH ON bbs_no = att_bbs_no
     WHERE bbs_no = #{bbsNo}
   </select>
 
 	<!-- 게시글 추가 -->
 	<insert id="add">
-	  	<selectKey keyProperty="bbsNo" order="BEFORE" resultType="int" >
-  		SELECT NEXT VALUE FOR bbs_seq
+	  	<selectKey keyProperty="bbsNo" order="AFTER" resultType="int" >
+  			SELECT LAST_INSERT_ID()
   		</selectKey>
-	    INSERT INTO bbs (
+	    INSERT INTO BBS (
 	        bbs_no
 	        , bbs_title
 	        , bbs_content
@@ -94,7 +94,7 @@
 
   <!-- 게시글 수정 -->
   <update id="edit">
-    UPDATE bbs
+    UPDATE BBS
     SET 
     	bbs_title = #{bbsTitle}
     	, bbs_content = #{bbsContent}
@@ -104,7 +104,7 @@
 
   <!-- 게시글 삭제 -->
   <delete id="del">
-    DELETE FROM bbs
+    DELETE FROM BBS
     WHERE bbs_no = #{bbsNo} 
     and bbs_writer = #{bbsWriter}
   </delete>

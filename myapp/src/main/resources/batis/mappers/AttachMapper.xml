@@ -6,7 +6,7 @@
 
   <!-- 첨부 파일 추가 -->
   <insert id="add" >
-    INSERT INTO attach (
+    INSERT INTO ATTATCH (
     	att_org_name
     	, att_new_name
     	, att_bbs_no
@@ -25,13 +25,13 @@
     	, att_org_name
     	, att_new_name
     	, att_bbs_no
-    FROM attach
+    FROM ATTATCH
     WHERE att_no = #{attNo}
   </select>
   
   <!-- 게시글 번호로 첨부 파일 삭제 -->
   <delete id="del">
-    DELETE FROM attach
+    DELETE FROM ATTATCH
     WHERE att_bbs_no = #{attBbsNo}
   </delete>
   
@@ -42,7 +42,7 @@
     	, att_org_name
     	, att_new_name
     	, att_bbs_no
-    FROM attach
+    FROM ATTATCH
     WHERE att_bbs_no = #{attBbsNo}
   </select>
 </mapper>
